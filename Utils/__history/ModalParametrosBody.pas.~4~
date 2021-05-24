@@ -1,0 +1,25 @@
+unit ModalParametrosBody;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TModalParametrosBody = class(TForm)
+    GroupBox3: TGroupBox;
+    btnConfirmaRequisicao: TButton;
+    btnCancelarRequisicao: TButton;
+    txtBody: TMemo;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+end.

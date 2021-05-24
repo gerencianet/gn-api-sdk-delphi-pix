@@ -1,0 +1,46 @@
+unit BodyPixClass;
+
+interface
+  {$IFDEF UNICODE}
+uses xSuperObject, xSuperJSON;
+
+Type
+
+  TFavored = record
+    [Alias('chave')]
+    Key: String;
+  end;
+
+  TPayer = record
+    [Alias('chave')] key: string;
+    [Alias('infoPagador')] PayingInfo: string;
+  end;
+
+ {$ENDIF}
+
+ TBodyPixClass = class
+  private
+    FPayer     : TPayer;
+    FFavored   : TFavored;
+    FValue     : String;
+
+    procedure SetPayer(const Value: TPayer);
+    procedure SetFavored(const Value: TFavored);
+    procedure SetValue(const Value: String);
+  public
+    [Alias('valor')]
+    property Key: String read FKey write SetKey;
+    [Alias('solicitacaoPagador')]
+    property PayerRequest: String read FPayerRequest write SetPayerRequest;
+    [Alias('calendario')]
+    property Calendar: TCalendar read FCalendar write SetCalendar;
+    [Alias('devedor')]
+    property Debtor: TDebtor read FDebtor write SetDebtor;
+    [Alias('valor')]
+    property Value: TValue read FValue write SetValue;
+  constructor Create;
+  end;
+
+implementation
+
+end.

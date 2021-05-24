@@ -1,0 +1,45 @@
+unit ModalParametrosIdent_Body;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TTModalParametrosIdent_Body = class(TForm)
+    GroupBox3: TGroupBox;
+    Label1: TLabel;
+    txtIdent: TEdit;
+    btnConfirmaRequisicao: TButton;
+    btnCancelarRequisicao: TButton;
+    Label2: TLabel;
+    txtBody: TEdit;
+    procedure btnCancelarRequisicaoClick(Sender: TObject);
+    procedure btnConfirmaRequisicaoClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  TModalParametrosIdent_Body: TTModalParametrosIdent_Body;
+
+implementation
+
+{$R *.dfm}
+
+procedure TTModalParametrosIdent_Body.btnCancelarRequisicaoClick(
+  Sender: TObject);
+begin
+  ModalResult := mrCancel;
+end;
+
+procedure TTModalParametrosIdent_Body.btnConfirmaRequisicaoClick(
+  Sender: TObject);
+begin
+  ModalResult := mrOk;
+end;
+
+end.

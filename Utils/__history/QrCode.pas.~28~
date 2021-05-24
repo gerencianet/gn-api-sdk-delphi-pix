@@ -1,0 +1,76 @@
+unit QrCode;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Objects,
+  FMX.StdCtrls, FMX.Controls.Presentation, FMX.Edit,
+  DelphiZXingQRCode, System.Math;
+
+type
+  TQrCodeFrm = class(TForm)
+    Image1: TImage;
+    Rectangle1: TRectangle;
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure QrCodeGenerator(texto: string);
+  end;
+
+var
+  QrCodeFrm: TQrCodeFrm;
+
+implementation
+
+{$R *.fmx}
+
+procedure TQrCodeFrm.FormShow(Sender: TObject);
+begin
+  QrCodeGenerator(Sender)
+end;
+
+procedure TQrCodeFrm.QrCodeGenerator(texto: string);
+var
+  QRCode: TDelphiZXingQRCode;
+  Row, Column: Integer;
+  pixelColor : TAlphaColor;
+  vBitMapData : TBitmapData;
+begin
+  Image1.DisableInterpolation := true;
+  Image1.WrapMode := TImageWrapMode.iwStretch;
+
+  QRCode := TDelphiZXingQRCode.Create;
+  try
+    QRCode.Data := texto;
+    QRCode.Encoding := TQRCodeEncoding.qrAuto;
+    QRCode.QuietZone := 4;
+    Image1.Bitmap.SetSize(QRCode.Rows, QRCode.Columns);
+
+    for Row := 0 to QRCode.Rows - 1 do
+    begin
+      for Column := 0 to QRCode.Columns - 1 do
+      begin
+        if (QRCode.IsBlack[Row, Column]) then
+          pixelColor := TAlphaColors.Black
+        else
+          pixelColor := TAlphaColors.White;
+
+        if Image1.Bitmap.Map(TMapAccess.maWrite, vBitMapData)  then
+        try
+          vBitMapData.SetPixel(Column, Row, pixelColor);
+        finally
+          Image1.Bitmap.Unmap(vBitMapData);
+        end;
+      end;
+    end;
+
+
+  finally
+    TQrCodeFrm.Create(Self);
+  end;
+end;
+
+end.

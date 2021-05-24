@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2021/04/16 16:47:13.000.294,C:\Users\luiz.campos\OneDrive - Gerencianet S.A\Documentos\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\luiz.campos\OneDrive - Gerencianet S.A\Documentos\Embarcadero\Studio\Projects\gn-api-pix-sdk-delphi\ApiPixGN.dproj</Transaction>
+    <Transaction>2021/04/16 16:49:00.000.651,=C:\Users\luiz.campos\OneDrive - Gerencianet S.A\Documentos\Embarcadero\Studio\Projects\gn-api-pix-sdk-delphi\Principal.pas</Transaction>
+    <Transaction>2021/04/16 16:49:58.000.952,=C:\Users\luiz.campos\OneDrive - Gerencianet S.A\Documentos\Embarcadero\Studio\Projects\gn-api-pix-sdk-delphi\XSuperObject.pas</Transaction>
+    <Transaction>2021/04/16 16:49:58.000.931,=C:\Users\luiz.campos\OneDrive - Gerencianet S.A\Documentos\Embarcadero\Studio\Projects\gn-api-pix-sdk-delphi\XSuperJSON.pas</Transaction>
+    <Transaction>2021/04/16 17:04:32.000.892,=C:\Users\luiz.campos\OneDrive - Gerencianet S.A\Documentos\Embarcadero\Studio\Projects\gn-api-pix-sdk-delphi\Unit1.pas</Transaction>
+    <Transaction>2021/04/16 17:04:49.000.930,C:\Users\luiz.campos\OneDrive - Gerencianet S.A\Documentos\Embarcadero\Studio\Projects\gn-api-pix-sdk-delphi\Unit1.dfm=C:\Users\luiz.campos\OneDrive - Gerencianet S.A\Documentos\Embarcadero\Studio\Projects\gn-api-pix-sdk-delphi\MainCode.dfm</Transaction>
+    <Transaction>2021/04/16 17:04:49.000.930,C:\Users\luiz.campos\OneDrive - Gerencianet S.A\Documentos\Embarcadero\Studio\Projects\gn-api-pix-sdk-delphi\Unit1.pas=C:\Users\luiz.campos\OneDrive - Gerencianet S.A\Documentos\Embarcadero\Studio\Projects\gn-api-pix-sdk-delphi\MainCode.pas</Transaction>
+    <Transaction>2021/04/16 17:19:58.000.044,=C:\Users\luiz.campos\OneDrive - Gerencianet S.A\Documentos\Embarcadero\Studio\Projects\gn-api-pix-sdk-delphi\Utils\MainCode.pas</Transaction>
+    <Transaction>2021/04/16 17:19:59.000.076,=C:\Users\luiz.campos\OneDrive - Gerencianet S.A\Documentos\Embarcadero\Studio\Projects\gn-api-pix-sdk-delphi\Utils\PrincipalFrm.pas</Transaction>
+    <Transaction>2021/04/16 17:19:59.000.094,=C:\Users\luiz.campos\OneDrive - Gerencianet S.A\Documentos\Embarcadero\Studio\Projects\gn-api-pix-sdk-delphi\Utils\XSuperJSON.pas</Transaction>
+    <Transaction>2021/04/16 17:19:59.000.113,=C:\Users\luiz.campos\OneDrive - Gerencianet S.A\Documentos\Embarcadero\Studio\Projects\gn-api-pix-sdk-delphi\Utils\XSuperObject.pas</Transaction>
+    <Transaction>2021/04/16 17:20:45.000.951,C:\Users\luiz.campos\OneDrive - Gerencianet S.A\Documentos\Embarcadero\Studio\Projects\gn-api-pix-sdk-delphi\Utils\PrincipalFrm.pas=</Transaction>
+  </Transactions>
+</BorlandProject>

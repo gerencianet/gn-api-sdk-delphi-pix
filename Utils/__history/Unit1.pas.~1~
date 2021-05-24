@@ -1,0 +1,179 @@
+unit Unit1;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Objects,
+  FMX.StdCtrls, FMX.Controls.Presentation, FMX.Edit,
+  FMXDelphiZXingQRCode, System.Math;
+
+type
+  TForm1 = class(TForm)
+    Edit1: TEdit;
+    Button1: TButton;
+    Image1: TImage;
+    Rectangle1: TRectangle;
+    procedure Button1Click(Sender: TObject);
+  private
+    procedure QrCodeMobile(imgQRCode: TImage; texto: string);
+    procedure QRCodeWin(imgQRCode: TImage; texto: string);
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.fmx}
+
+procedure TForm1.QrCodeMobile(imgQRCode: TImage; texto: string);
+const
+    downsizeQuality: Integer = 2; // bigger value, better quality, slower rendering
+var
+    QRCode: TDelphiZXingQRCode;
+    Row, Column: Integer;
+    pixelColor : TAlphaColor;
+    vBitMapData : TBitmapData;
+    pixelCount, y, x: Integer;
+    columnPixel, rowPixel: Integer;
+
+    function GetPixelCount(AWidth, AHeight: Single): Integer;
+    begin
+        if QRCode.Rows > 0 then
+          Result := Trunc(Min(AWidth, AHeight)) div QRCode.Rows
+        else
+          Result := 0;
+    end;
+begin
+    // Not a good idea to stretch the QR Code...
+    if imgQRCode.WrapMode = TImageWrapMode.iwStretch then
+        imgQRCode.WrapMode := TImageWrapMode.Fit;
+
+
+    QRCode := TDelphiZXingQRCode.Create;
+
+    try
+        QRCode.Data := '  ' + texto;
+        QRCode.Encoding := TQRCodeEncoding.qrAuto;
+        QRCode.QuietZone := 4;
+        pixelCount := GetPixelCount(imgQRCode.Width, imgQRCode.Height);
+
+        case imgQRCode.WrapMode of
+            TImageWrapMode.iwOriginal,
+            TImageWrapMode.iwTile,
+            TImageWrapMode.iwCenter:
+            begin
+                if pixelCount > 0 then
+                    imgQRCode.Bitmap.SetSize(QRCode.Columns * pixelCount,
+                    QRCode.Rows * pixelCount);
+            end;
+
+            TImageWrapMode.iwFit:
+            begin
+                if pixelCount > 0 then
+                begin
+                    imgQRCode.Bitmap.SetSize(QRCode.Columns * pixelCount * downsizeQuality,
+                        QRCode.Rows * pixelCount * downsizeQuality);
+                    pixelCount := pixelCount * downsizeQuality;
+                end;
+            end;
+
+            //TImageWrapMode.iwStretch:
+            //    raise Exception.Create('Not a good idea to stretch the QR Code');
+        end;
+        if imgQRCode.Bitmap.Canvas.BeginScene then
+        begin
+            try
+                imgQRCode.Bitmap.Canvas.Clear(TAlphaColors.White);
+                if pixelCount > 0 then
+                begin
+                      if imgQRCode.Bitmap.Map(TMapAccess.maWrite, vBitMapData)  then
+                      begin
+                            try
+                                 For Row := 0 to QRCode.Rows - 1 do
+                                 begin
+                                    for Column := 0 to QRCode.Columns - 1 do
+                                    begin
+                                        if (QRCode.IsBlack[Row, Column]) then
+                                            pixelColor := TAlphaColors.Black
+                                        else
+                                            pixelColor := TAlphaColors.White;
+
+                                        columnPixel := Column * pixelCount;
+                                        rowPixel := Row * pixelCount;
+
+                                        for x := 0 to pixelCount - 1 do
+                                            for y := 0 to pixelCount - 1 do
+                                                vBitMapData.SetPixel(columnPixel + x,
+                                                    rowPixel + y, pixelColor);
+                                    end;
+                                 end;
+                            finally
+                              imgQRCode.Bitmap.Unmap(vBitMapData);
+                            end;
+                      end;
+                end;
+            finally
+                imgQRCode.Bitmap.Canvas.EndScene;
+          end;
+        end;
+    finally
+        QRCode.Free;
+    end;
+end;
+
+procedure TForm1.QRCodeWin(imgQRCode: TImage; texto: string);
+var
+  QRCode: TDelphiZXingQRCode;
+  Row, Column: Integer;
+  pixelColor : TAlphaColor;
+  vBitMapData : TBitmapData;
+begin
+    imgQRCode.DisableInterpolation := true;
+    imgQRCode.WrapMode := TImageWrapMode.iwStretch;
+
+    QRCode := TDelphiZXingQRCode.Create;
+    try
+        QRCode.Data := texto;
+        QRCode.Encoding := TQRCodeEncoding.qrAuto;
+        QRCode.QuietZone := 4;
+        imgQRCode.Bitmap.SetSize(QRCode.Rows, QRCode.Columns);
+
+        for Row := 0 to QRCode.Rows - 1 do
+        begin
+            for Column := 0 to QRCode.Columns - 1 do
+            begin
+                if (QRCode.IsBlack[Row, Column]) then
+                    pixelColor := TAlphaColors.Black
+                else
+                    pixelColor := TAlphaColors.White;
+
+                if imgQRCode.Bitmap.Map(TMapAccess.maWrite, vBitMapData)  then
+                try
+                    vBitMapData.SetPixel(Column, Row, pixelColor);
+                finally
+                    imgQRCode.Bitmap.Unmap(vBitMapData);
+                end;
+            end;
+        end;
+
+    finally
+        QRCode.Free;
+    end;
+
+end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+    {$IFDEF MSWINDOWS}
+    QRCodeWin(Image1, edit1.text);
+    {$ELSE}
+    QRCodeMobile(Image1, edit1.text);
+    {$ENDIF}
+end;
+
+end.

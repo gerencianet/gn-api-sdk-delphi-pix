@@ -1,0 +1,76 @@
+unit ModalParametrosIdent2_Body;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TModalParametrosIdent2_Body = class(TForm)
+    GroupBox3: TGroupBox;
+    txtE2eid: TEdit;
+    txtId: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    btnConfirmRequest: TButton;
+    btnCancelRequest: TButton;
+    GroupBox1: TGroupBox;
+    txtValue: TEdit;
+    Label3: TLabel;
+    GroupBox2: TGroupBox;
+    txtKeyFav: TEdit;
+    Label4: TLabel;
+    GroupBox4: TGroupBox;
+    Label5: TLabel;
+    txtKeyPag: TEdit;
+    txtInfoPayer: TEdit;
+    Label6: TLabel;
+    procedure btnConfirmRequestClick(Sender: TObject);
+    procedure btnCancelRequestClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  private
+    function GetE2eid: String;
+    function GetId: String;
+    function GetBody: String;
+  public
+    property e2eid: String read GetE2eid;
+    property id:    String read GetId;
+    property Body:    String read GetBody;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+function TModalParametrosIdent2_Body.GetE2eid: String;
+begin
+  Result := txtE2eid.Text;
+end;
+
+procedure TModalParametrosIdent2_Body.btnCancelRequestClick(Sender: TObject);
+begin
+  ModalResult := mrCancel;
+end;
+
+procedure TModalParametrosIdent2_Body.btnConfirmRequestClick(Sender: TObject);
+begin
+  ModalResult := mrOk
+end;
+
+procedure TModalParametrosIdent2_Body.FormCreate(Sender: TObject);
+begin
+  Self.Position := poScreenCenter;
+end;
+
+function TModalParametrosIdent2_Body.GetId: String;
+begin
+  Result := txtId.Text;
+end;
+
+function TModalParametrosIdent2_Body.GetBody: String;
+begin
+  //
+end;
+
+end.

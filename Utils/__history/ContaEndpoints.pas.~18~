@@ -1,0 +1,98 @@
+unit ContaEndpoints;
+
+interface
+
+uses
+  Classes, Conexoes, IdHTTP, XSuperObject, IdGlobal, Vcl.Dialogs, System.SysUtils, MainCode;
+
+Procedure SGetV2GnConfig;
+Procedure SGetV2GnSaldo;
+Procedure SPutV2GnConfig;
+
+implementation
+
+threadvar
+  HttpClient: TIdHTTP;
+  AccessToken, ObjResult : iSuperObject;
+  JsonToSend: TMemoryStream;
+
+procedure SGetV2GnConfig;
+var
+  sResponse: string;
+begin
+  try
+    AccessToken := Conexoes.OauthToken;
+    HttpClient := Conexoes.SetupClient;
+    HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+    sResponse := HttpClient.Get(MainCode.MainFrm.Enviroment + '/v2/gn/config');
+
+    MainCode.MainFrm.MemoResponse.text := sresponse;
+
+  except
+    on E: Exception do
+    begin
+      ShowMessage('Error on request: '#13#10 + e.Message);
+    end;
+  end;
+end;
+
+procedure SGetV2GnSaldo;
+var
+  sResponse: string;
+begin
+  try
+    AccessToken := Conexoes.OauthToken;
+    HttpClient := Conexoes.SetupClient;
+
+    HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+    sResponse := HttpClient.Get(MainCode.MainFrm.Enviroment + '/v2/gn/saldo');
+
+    MainCode.MainFrm.MemoResponse.text := sresponse;
+
+  except
+    on E: Exception do
+    begin
+      ShowMessage('Error on request: '#13#10 + e.Message);
+    end;
+  end;
+end;
+
+procedure SPutV2GnConfig;
+Const
+      Body_1  = '"pix": { "receberSemChave": true,"chaves": {';
+      Body_2  = '"isabelle@email.com": {"recebimento": { "txidObrigatorio": false,';
+      Body_3  = '"qrCodeEstatico": {"recusarTodos": false}}},';
+      Body_4  = '"efa1db8c-735b-4898-92e0-a54daabe65e6": {"recebimento": {"txidObrigatorio": false,';
+      Body_5  = '"qrCodeEstatico": {"recusarTodos": false}}}}}';
+      Body = '{'+Body_1 + Body_2 + Body_3 + Body_4 + Body_5 +'}';
+var
+  sResponse: string;
+begin
+  try
+    try
+      AccessToken := Conexoes.OauthToken;
+      HttpClient := Conexoes.SetupClient;
+
+      HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+
+      JsonToSend := TMemoryStream.Create;
+      WriteStringToStream(JsonToSend, Body, IndyTextEncoding_UTF8);
+      JsonToSend.Position := 0;
+
+
+      sResponse := HttpClient.Put( MainCode.MainFrm.Enviroment +'/v2/gn/config', JsonToSend);
+
+      MainCode.MainFrm.MemoResponse.text := sresponse;
+
+    except
+      on E: Exception do
+      begin
+        ShowMessage('Error on request: '#13#10 + e.Message);
+      end;
+    end;
+  finally
+    HttpClient.Free;
+  end;
+end;
+
+end.

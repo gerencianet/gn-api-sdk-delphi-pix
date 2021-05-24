@@ -1,0 +1,21 @@
+unit AutenticacaoEndpoints;
+
+interface
+
+uses
+  Classes, Conexoes, IdHTTP, XSuperObject, IdGlobal, Vcl.Dialogs, System.SysUtils, MainCode;
+
+procedure OauthToken;
+
+implementation
+
+threadvar
+  AccessToken : iSuperObject;
+
+procedure OauthToken;
+begin
+  AccessToken := Conexoes.OauthToken;
+  MainCode.MainFrm.MemoResponse.Text := AccessToken.S['access_token'];
+end;
+
+end.

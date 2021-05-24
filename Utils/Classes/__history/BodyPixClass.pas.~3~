@@ -1,0 +1,23 @@
+unit BodyPixClass;
+
+interface
+  {$IFDEF UNICODE}
+uses xSuperObject, xSuperJSON;
+
+Type
+
+  TKey = record
+    [Alias('chave')]
+    Key: String;
+  end;
+
+  TPayer = record
+    [Alias('chave')] key: string;
+    [Alias('infoPagador')] PayingInfo: string;
+  end;
+
+ {$ENDIF}
+
+implementation
+
+end.

@@ -1,0 +1,80 @@
+unit CustomerClasses;
+
+interface
+  {$IFDEF UNICODE}
+uses xSuperObject, xSuperJSON;
+
+Type
+
+  TCalendario = record
+    [Alias('expiracao')]
+    expiracao: Integer;
+  end;
+
+  TDevedor = record
+    [Alias('cpf')] cpf: string;
+    [Alias('nome')] nome: string;
+  end;
+
+  TValor = record
+    [Alias('original')]
+    original: string;
+  end;
+ {$ENDIF}
+
+  TCustomerClass = class
+  private
+    FCalendario: TCalendario;
+    FDevedor   : TDevedor;
+    FValor     : TValor;
+    FChave     : String;
+    FSolicitacaoPagador: String;
+
+    procedure SetCalendario(const Value: TCalendario);
+    procedure SetDevedor(const Value: TDevedor);
+    procedure SetValor(const Value: TValor);
+    procedure SetChave(const Value: String);
+    procedure SetSolicitacaoPagador(const Value: String);
+  public
+    [Alias('chave')]
+    property Chave: String read FChave write SetChave;
+    [Alias('solicitacaoPagador')]
+    property SolicitacaoPagador: String read FSolicitacaoPagador write SetSolicitacaoPagador;
+    [Alias('calendario')]
+    property Calendario: TCalendario read FCalendario write SetCalendario;
+    [Alias('devedor')]
+    property Devedor: TDevedor read FDevedor write SetDevedor;
+    [Alias('valor')]
+    property Valor: TValor read FValor write SetValor;
+  end;
+
+implementation
+
+{ TCustomerClass }
+
+procedure TCustomerClass.SetCalendario(const Value: TCalendario);
+begin
+  FCalendario := Value;
+end;
+
+procedure TCustomerClass.SetChave(const Value: String);
+begin
+  FChave := Value;
+end;
+
+procedure TCustomerClass.SetDevedor(const Value: TDevedor);
+begin
+  FDevedor := Value;
+end;
+
+procedure TCustomerClass.SetSolicitacaoPagador(const Value: String);
+begin
+  FSolicitacaoPagador := Value;
+end;
+
+procedure TCustomerClass.SetValor(const Value: TValor);
+begin
+  FValor := Valor;
+end;
+
+end.

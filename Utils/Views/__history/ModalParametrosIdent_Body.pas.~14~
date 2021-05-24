@@ -1,0 +1,105 @@
+unit ViewCreateCharge;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, BodyCobClasses, XSuperObject;
+
+type
+  TModalParametrosIdent_Body = class(TForm)
+    GroupBox3: TGroupBox;
+    txtIdent: TEdit;
+    btnConfirmaRequisicao: TButton;
+    btnCancelarRequisicao: TButton;
+    Label1: TLabel;
+    gbDevedor: TGroupBox;
+    Label2: TLabel;
+    Label3: TLabel;
+    txtName: TEdit;
+    txtCpf: TEdit;
+    GroupBox1: TGroupBox;
+    Label4: TLabel;
+    txtExpiration: TEdit;
+    gbValor: TGroupBox;
+    Label5: TLabel;
+    txtValue: TEdit;
+    GroupBox2: TGroupBox;
+    txtKey: TEdit;
+    GroupBox4: TGroupBox;
+    txtSolicitacaoPagador: TEdit;
+    procedure btnCancelarRequisicaoClick(Sender: TObject);
+    procedure btnConfirmaRequisicaoClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  private
+    function GetIdent: String;
+    function GetBody : String;
+  public
+    property Identificador: String read GetIdent;
+    property Body: String read GetBody;
+    procedure LimpaCamposRequisicao;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+procedure TModalParametrosIdent_Body.btnCancelarRequisicaoClick(
+  Sender: TObject);
+begin
+  ModalResult := mrCancel;
+end;
+
+procedure TModalParametrosIdent_Body.btnConfirmaRequisicaoClick(
+  Sender: TObject);
+begin
+  ModalResult := mrOk;
+end;
+
+procedure TModalParametrosIdent_Body.FormCreate(Sender: TObject);
+begin
+  Self.Position := poScreenCenter;
+end;
+
+function TModalParametrosIdent_Body.GetIdent: String;
+begin
+  Result := txtIdent.Text;
+end;
+
+function TModalParametrosIdent_Body.GetBody: String;
+var
+  BodyRequest : TBodyCobClasses;
+  FCalendario : TCalendario;
+  FDevedor    : TDevedor;
+  FValor      : TValor;
+begin
+  BodyRequest := TBodyCobClasses.Create;
+
+  FCalendario.expiracao := StrToInt(txtExpiration.Text);
+  BodyRequest.Calendario := FCalendario;
+
+  FDevedor.cpf := txtCpf.Text;
+  FDevedor.nome := txtName.Text;
+  BodyRequest.Devedor := FDevedor;
+
+  FValor.original := txtValue.Text;
+  BodyRequest.Valor := FValor;
+
+  BodyRequest.Chave := txtKey.Text;
+  BodyRequest.solicitacaoPagador := txtSolicitacaoPagador.Text;
+
+  Result := BodyRequest.AsJSON;
+end;
+
+procedure TModalParametrosIdent_Body.LimpaCamposRequisicao;
+begin
+  txtExpiration.Text := '3600';
+  txtName.Text := '';
+  txtCpf.Text := '';
+  txtValue.Text := '';
+  txtKey.Text := '';
+  txtSolicitacaoPagador.Text := '';
+  txtIdent.Text := '';
+end;
+
+end.

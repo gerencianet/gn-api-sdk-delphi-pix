@@ -1,0 +1,30 @@
+unit ModalParametrosIdent;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TModalParametrosIdent = class(TForm)
+    GroupBox3: TGroupBox;
+    Label1: TLabel;
+    txtDataInicio: TEdit;
+    btnCancelarRequisicao: TButton;
+    btnConfirmaRequisicao: TButton;
+    procedure btnCancelarRequisicaoClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  ModalParametrosIdent : TModalParametrosIdent;
+
+implementation
+
+{$R *.dfm}
+
+end.

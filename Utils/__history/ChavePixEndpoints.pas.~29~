@@ -1,0 +1,103 @@
+unit ChavePixEndpoints;
+
+interface
+
+uses
+  Classes, Conexoes, IdHTTP, XSuperObject, IdGlobal, Vcl.Dialogs, System.SysUtils, Forms,
+  MainCode, ModalParametrosIdent, ModalParametrosBody;
+
+Procedure SGetV2GnEvp;
+Procedure SPostV2GnEvp;
+Procedure SDelV2GnEvp_chave;
+
+implementation
+
+threadvar
+  HttpClient: TIdHTTP;
+  AccessToken, ObjResult : iSuperObject;
+  JsonToSend: TMemoryStream;
+
+var
+  ModalParametrosIdent : TModalParametrosIdent;
+  ModalParametrosBody  : TModalParametrosBody;
+
+procedure SGetV2GnEvp;
+var
+  sResponse: string;
+begin
+  try
+    AccessToken := Conexoes.OauthToken;
+    HttpClient := Conexoes.SetupClient;
+
+    HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+    sResponse := HttpClient.Get( MainCode.MainFrm.Enviroment + '/v2/gn/evp');
+
+    MainCode.MainFrm.MemoResponse.text := sresponse;
+
+  except
+    on E: Exception do
+    begin
+      ShowMessage('Error on request: '#13#10 + e.Message);
+    end;
+  end;
+end;
+
+procedure SPostV2GnEvp;
+Const
+  Body = '{}';
+var
+  sResponse: string;
+begin
+  try
+    AccessToken := Conexoes.OauthToken;
+    HttpClient := Conexoes.SetupClient;
+
+    HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+
+    JsonToSend := TMemoryStream.Create;
+    WriteStringToStream(JsonToSend, Body, IndyTextEncoding_UTF8);
+    JsonToSend.Position := 0;
+
+    sResponse := HttpClient.Post( MainCode.MainFrm.Enviroment + '/v2/gn/evp', JsonToSend);
+
+    MainCode.MainFrm.MemoResponse.text := sresponse;
+
+  except
+    on E: Exception do
+    begin
+      ShowMessage('Error on request: '#13#10 + e.Message);
+    end;
+  end;
+end;
+
+procedure SDelV2GnEvp_chave;
+var
+  sResponse, chave: string;
+begin
+  try
+
+   if not Assigned(ModalParametrosIdent) then
+      Application.CreateForm(TModalParametrosIdent, ModalParametrosIdent);
+
+    if ModalParametrosIdent.ShowModal = 1 then
+    begin
+      AccessToken := Conexoes.OauthToken;
+      HttpClient := Conexoes.SetupClient;
+
+      HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+
+      sResponse := HttpClient.Delete(MainCode.MainFrm.Enviroment + '/v2/gn/evp/'+chave);
+
+      MainCode.MainFrm.MemoResponse.text := sresponse;
+
+    end;
+  except
+    on E: Exception do
+    begin
+      ShowMessage('Error on request: '#13#10 + e.Message);
+    end;
+  end;
+end;
+
+
+end.

@@ -1,0 +1,62 @@
+unit ModalParametros;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TModalParametros = class(TForm)
+    GroupBox3: TGroupBox;
+    txtDataInicio: TEdit;
+    txtDataFim: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    btnConfirmaRequisicao: TButton;
+    btnCancelarRequisicao: TButton;
+    procedure btnConfirmaRequisicaoClick(Sender: TObject);
+    procedure btnCancelarRequisicaoClick(Sender: TObject);
+  private
+    function GetDataInicio: String;
+    function GetDataFim: String;
+  public
+    property DataInicio: String read GetDataInicio;
+    property DataFim:    String read GetDataFim;
+  end;
+
+var
+  ParametrosFrm: TModalParametros;
+
+implementation
+
+{$R *.dfm}
+
+function TModalParametros.GetDataInicio: String;
+begin
+  Result := txtDataInicio.Text;
+end;
+
+procedure TModalParametros.btnCancelarRequisicaoClick(Sender: TObject);
+begin
+  ModalResult := mrCancel;
+end;
+
+procedure TModalParametros.btnConfirmaRequisicaoClick(Sender: TObject);
+begin
+  if txtDataInicio.Text = '' then
+  begin
+    ShowMessage('Preencha o campo de Data Inicio');
+    txtDataInicio.SetFocus;
+    Abort;
+  end;
+
+  ModalResult := mrOk
+end;
+
+function TModalParametros.GetDataFim: String;
+begin
+  Result := txtDataFim.Text;
+end;
+
+end.

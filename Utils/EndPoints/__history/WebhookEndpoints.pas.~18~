@@ -1,0 +1,158 @@
+unit WebhookEndpoints;
+
+interface
+
+uses
+  Classes, Conexoes, IdHTTP, XSuperObject, IdGlobal, Vcl.Dialogs, System.SysUtils,
+  MainCode, ViewList, ViewDetail, ViewConfigWebhook, Forms;
+
+procedure SGetV2Webhook;
+procedure SPutV2Webhook_chave;
+procedure SGetV2Webhook_chave;
+procedure SDelV2Webhook_chave;
+
+implementation
+
+threadvar
+  HttpClient: TIdHTTP;
+  AccessToken, ObjResult : iSuperObject;
+  JsonToSend: TMemoryStream;
+
+procedure SGetV2Webhook;
+var
+  sResponse: string;
+  Modal    : TViewList;
+begin
+  try
+    try
+      if not Assigned(Modal) then
+        Application.CreateForm(TViewList, Modal);
+
+      if Modal.ShowModal = 1 then
+      begin
+        AccessToken := Conexoes.OauthToken;
+        HttpClient := SetupClient;
+        HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+        sResponse := HttpClient.Get(MainCode.MainFrm.Enviroment + '/v2/webhook/?inicio=' + Modal.StartDate
+                                    +'&fim=' + Modal.EndDate);
+
+        MainCode.MainFrm.MemoResponse.text := sresponse;
+      end;
+
+    except
+      on E: Exception do
+      begin
+        ShowMessage('Erro na Requisição GET /v2/webhook/: '#13#10#13#10 + e.Message);
+      end;
+    end;
+  finally
+    Modal.ClearRequestfields;
+  end;
+end;
+
+procedure SGetV2Webhook_chave;
+var
+  sResponse: string;
+  Modal    : TViewDetail;
+begin
+  try
+    try
+      if not Assigned(Modal) then
+        Application.CreateForm(TViewDetail, Modal);
+
+      if Modal.ShowModal = 1 then
+      begin
+        AccessToken := Conexoes.OauthToken;
+        HttpClient := SetupClient;
+
+        HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+
+        sResponse := HttpClient.Get(MainCode.MainFrm.Enviroment + '/v2/webhook/' + Modal.Identifier);
+
+        MainCode.MainFrm.MemoResponse.text := sresponse;
+      end;
+
+    except
+      on E: Exception do
+      begin
+        ShowMessage('Erro na Requisição GET /v2/webhook/:chave '#13#10#13#10 + e.Message);
+      end;
+    end;
+  finally
+    Modal.ClearRequestfields;
+  end;
+end;
+
+procedure SPutV2Webhook_chave;
+var
+  sResponse: string;
+  Modal    : TViewConfigWebhook;
+begin
+  try
+    try
+      if not Assigned(Modal) then
+        Application.CreateForm(TViewConfigWebhook, Modal);
+
+      if Modal.ShowModal = 1 then
+      begin
+        AccessToken := Conexoes.OauthToken;
+        HttpClient := SetupClient;
+
+        HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+
+        JsonToSend := TMemoryStream.Create;
+        WriteStringToStream(JsonToSend, Modal.BodyWebhookURL, IndyTextEncoding_UTF8);
+        JsonToSend.Position := 0;
+
+        sResponse := HttpClient.Put(MainCode.MainFrm.Enviroment + '/v2/webhook/'
+                              + Modal.Identifier, JsonToSend);
+
+        MainCode.MainFrm.MemoResponse.text := sresponse;
+      end;
+
+    except
+      on E: Exception do
+      begin
+        ShowMessage('Erro na requisição PUT /v2/webhook/:chave '#13#10#13#10 + e.Message);
+      end;
+    end;
+  finally
+    Modal.ClearRequestfields;
+  end;
+end;
+
+procedure SDelV2Webhook_chave;
+var
+  sResponse: string;
+  Modal    : TViewDetail;
+begin
+  try
+    try
+      if not Assigned(Modal) then
+        Application.CreateForm(TViewDetail, Modal);
+
+      if Modal.ShowModal = 1 then
+      begin
+        AccessToken := Conexoes.OauthToken;
+        HttpClient := Conexoes.SetupClient;
+
+        HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+        sResponse := HttpClient.Delete(MainCode.MainFrm.Enviroment + '/v2/webhook/'+ Modal.Identifier);
+
+        MainCode.MainFrm.MemoResponse.text := sresponse;
+      end;
+
+    except
+      on E: Exception do
+      begin
+        ShowMessage('Erro na requisição DELETE /v2/webhook/:chave '#13#10#13#10 + e.Message);
+      end;
+    end;
+  finally
+    Modal.ClearRequestfields;
+  end;
+end;
+
+
+
+end.

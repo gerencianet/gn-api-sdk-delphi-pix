@@ -1,0 +1,207 @@
+unit CobrancasEndpoints;
+
+interface
+
+uses
+  Vcl.Forms, Classes, Conexoes, IdHTTP, XSuperObject, IdGlobal, Vcl.Dialogs, System.SysUtils,
+  MainCode, ModalParametrosDatas, ModalParametrosIdent, ModalParametrosIdent_Body, ModalParametrosBody;
+
+procedure SGetV2Cob;
+procedure SGetv2Cob_txid;
+procedure SPutv2Cob_txid;
+procedure SPatchv2Update;
+procedure SPostv2Cob;
+
+implementation
+
+threadvar
+  HttpClient: TIdHTTP;
+  AccessToken, ObjResult : iSuperObject;
+  JsonToSend: TMemoryStream;
+
+var
+  ModalParametrosDatas : TModalParametrosDatas;
+  ModalParametrosIdent : TModalParametrosIdent;
+  ModalParametrosIdent_Body : TModalParametrosIdent_Body;
+  ModalParametrosBody : TModalParametrosBody;
+
+procedure SGetV2Cob;
+var
+  sResponse: string;
+begin
+try
+  try
+    if not Assigned(ModalParametrosDatas) then
+      Application.CreateForm(TModalParametrosDatas, ModalParametrosDatas);
+
+    if ModalParametrosDatas.ShowModal = 1 then
+    begin
+
+      AccessToken := Conexoes.OauthToken;
+      HttpClient := Conexoes.SetupClient;
+
+      HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+      sResponse := HttpClient.Get(MainCode.MainFrm.Enviroment + '/v2/cob?inicio='+ ModalParametrosDatas.DataInicio +
+                                 '&fim=' + ModalParametrosDatas.DataFim );
+
+      MainCode.MainFrm.MemoResponse.text := sresponse;
+
+    end;
+  except
+    on E: Exception do
+    begin
+      ShowMessage('Erro na Requisição GET /v2/cob '#13#10#13#10 + e.Message);
+    end;
+  end;
+finally
+  ModalParametrosDatas.txtDataInicio.Text := '';
+  ModalParametrosDatas.txtDataFim.Text := '';
+end;
+end;
+
+procedure SGetv2Cob_txid;
+var
+  sResponse: string;
+begin
+  try
+    try
+      if not Assigned(ModalParametrosIdent) then
+        Application.CreateForm(TModalParametrosIdent, ModalParametrosIdent);
+
+      if ModalParametrosIdent.ShowModal = 1 then
+      begin
+        AccessToken := Conexoes.OauthToken;
+        HttpClient := Conexoes.SetupClient;
+
+        HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+
+        sResponse := HttpClient.Get(MainCode.MainFrm.Enviroment + '/v2/cob/' + ModalParametrosIdent.Identificador);
+
+        MainCode.MainFrm.MemoResponse.text := sresponse;
+      end;
+
+    except
+      on E: Exception do
+      begin
+        ShowMessage('Erro na Requisição GET /v2/cob/:txid '#13#10#13#10 + e.Message);
+      end;
+    end;
+  finally
+    ModalParametrosIdent.txtIdent.Text := '';
+  end;
+end;
+
+
+procedure SPutv2Cob_txid;
+var
+  sResponse: String;
+begin
+  try
+    try
+      if not Assigned(ModalParametrosIdent_Body) then
+        Application.CreateForm(TModalParametrosIdent_Body, ModalParametrosIdent_Body);
+
+      if ModalParametrosIdent_Body.ShowModal = 1 then
+      begin
+        AccessToken := Conexoes.OauthToken;
+        HttpClient := Conexoes.SetupClient;
+
+        HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+
+        JsonToSend := TMemoryStream.Create;
+        WriteStringToStream(JsonToSend, ModalParametrosIdent_Body.Body, IndyTextEncoding_UTF8);
+        JsonToSend.Position := 0;
+
+        sResponse := HttpClient.Put( MainCode.MainFrm.Enviroment +'/v2/cob/'+ ModalParametrosIdent_Body.Identificador, JsonToSend);
+
+        MainCode.MainFrm.MemoResponse.text := sresponse;
+
+      end;
+    except
+      on E: Exception do
+      begin
+        ShowMessage('Erro na Requisição PUT /v2/cob/:txid '#13#10#13#10 + e.Message);
+      end;
+    end;
+  finally
+    ModalParametrosIdent_Body.txtIdent.Text := '';
+    ModalParametrosIdent_Body.txtBody.Text := '';
+  end;
+end;
+
+procedure SPatchv2Update;
+var
+  sResponse: string;
+begin
+  try
+    try
+
+      if not Assigned(ModalParametrosIdent_Body) then
+        Application.CreateForm(TModalParametrosIdent_Body, ModalParametrosIdent_Body);
+
+      if ModalParametrosIdent_Body.ShowModal = 1 then
+      begin
+        AccessToken := Conexoes.OauthToken;
+        HttpClient := Conexoes.SetupClient;
+
+        HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+
+        JsonToSend := TMemoryStream.Create;
+        WriteStringToStream(JsonToSend, ModalParametrosIdent_Body.Body, IndyTextEncoding_UTF8);
+        JsonToSend.Position := 0;
+
+        sResponse := HttpClient.Patch( MainCode.MainFrm.Enviroment +'/v2/cob/'+ ModalParametrosIdent_Body.Identificador, JsonToSend);
+
+        MainCode.MainFrm.MemoResponse.text := sresponse;
+
+      end;
+
+    except
+      on E: Exception do
+      begin
+        ShowMessage('Erro na Requisição PACTH /v2/Update/:txid '#13#10#13#10 + e.Message);
+        end;
+    end;
+  finally
+    ModalParametrosIdent_Body.txtIdent.Text := '';
+    ModalParametrosIdent_Body.txtBody.Text := '';
+  end;
+end;
+procedure SPostv2Cob;
+var
+  sResponse: string;
+begin
+  try
+    try
+      if not Assigned(ModalParametrosBody) then
+        Application.CreateForm(TModalParametrosBody, ModalParametrosBody);
+
+      if ModalParametrosBody.ShowModal = 1 then
+      begin
+        AccessToken := Conexoes.OauthToken;
+        HttpClient := Conexoes.SetupClient;
+
+        HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+
+        JsonToSend := TMemoryStream.Create;
+        WriteStringToStream(JsonToSend, ModalParametrosBody.Body, IndyTextEncoding_UTF8);
+        JsonToSend.Position := 0;
+
+        sResponse := HttpClient.Post( MainCode.MainFrm.Enviroment  + '/v2/cob', JsonToSend);
+
+        MainCode.MainFrm.MemoResponse.text := sresponse;
+
+      end;
+
+    except
+      on E: Exception do
+      begin
+        ShowMessage('Erro na Requisição POST /v2/cob/ '#13#10#13#10 + e.Message);
+      end;
+    end;
+  finally
+    ModalParametrosBody.txtBody.Text := '';
+  end;
+end;
+
+end.

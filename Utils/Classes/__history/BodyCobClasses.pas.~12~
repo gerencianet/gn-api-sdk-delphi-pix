@@ -1,0 +1,86 @@
+unit BodyCobClasses;
+
+interface
+  {$IFDEF UNICODE}
+uses xSuperObject, xSuperJSON;
+
+Type
+
+  TCalendar = record
+    [Alias('expiracao')]
+    expiration: Integer;
+  end;
+
+  TDebtor = record
+    [Alias('cpf')]  cpf: string;
+    [Alias('nome')] name: string;
+  end;
+
+  TValue = record
+    [Alias('original')]
+    original: string;
+  end;
+ {$ENDIF}
+
+  TBodyCobClasses = class
+  private
+    FCalendar  : TCalendar;
+    FDebtor    : TDebtor;
+    FValue     : TValue;
+    FKey       : String;
+    FPayerRequest: String;
+
+    procedure SetCalendar(const Value: TCalendar);
+    procedure SetDebtor(const Value: TDebtor);
+    procedure SetValue(const Value: TValue);
+    procedure SetKey(const Value: String);
+    procedure SetPayerRequest(const Value: String);
+  public
+    [Alias('chave')]
+    property Key: String read FKey write SetKey;
+    [Alias('solicitacaoPagador')]
+    property PayerRequest: String read FPayerRequest write SetPayerRequest;
+    [Alias('calendario')]
+    property Calendar: TCalendar read FCalendar write SetCalendar;
+    [Alias('devedor')]
+    property Debtor: TDebtor read FDebtor write SetDebtor;
+    [Alias('valor')]
+    property Value: TValue read FValue write SetValue;
+  constructor Create;
+  end;
+
+implementation
+
+{ TBodyCobClasses }
+
+constructor TBodyCobClasses.Create;
+begin
+  inherited;
+end;
+
+procedure TBodyCobClasses.SetCalendar(const Value: TCalendar);
+begin
+  FCalendar := Value;
+end;
+
+procedure TBodyCobClasses.SetKey(const Value: String);
+begin
+  FKey := Value;
+end;
+
+procedure TBodyCobClasses.SetDebtor(const Value: TDebtor);
+begin
+  FDebtor := Value;
+end;
+
+procedure TBodyCobClasses.SetPayerRequest(const Value: String);
+begin
+  FPayerRequest := Value;
+end;
+
+procedure TBodyCobClasses.SetValue(const Value: TValue);
+begin
+  FValue := Value;
+end;
+
+end.

@@ -1,0 +1,58 @@
+unit ModalParametrosIdent2;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TModalParametrosIdent2 = class(TForm)
+    GroupBox3: TGroupBox;
+    txtE2eid: TEdit;
+    txtId: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    btnConfirmaRequisicao: TButton;
+    btnCancelarRequisicao: TButton;
+    procedure btnConfirmaRequisicaoClick(Sender: TObject);
+    procedure btnCancelarRequisicaoClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  private
+    function GetE2eid: String;
+    function GetId: String;
+  public
+    property e2eid: String read GetE2eid;
+    property id:    String read GetId;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+function TModalParametrosIdent2.GetE2eid: String;
+begin
+  Result := txtE2eid.Text;
+end;
+
+procedure TModalParametrosIdent2.btnCancelarRequisicaoClick(Sender: TObject);
+begin
+  ModalResult := mrCancel;
+end;
+
+procedure TModalParametrosIdent2.btnConfirmaRequisicaoClick(Sender: TObject);
+begin
+  ModalResult := mrOk
+end;
+
+procedure TModalParametrosIdent2.FormCreate(Sender: TObject);
+begin
+  Self.Position := poScreenCenter;
+end;
+
+function TModalParametrosIdent2.GetId: String;
+begin
+  Result := txtId.Text;
+end;
+
+end.

@@ -1,0 +1,144 @@
+unit WebhookEndpoints;
+
+interface
+
+uses
+  Classes, Conexoes, IdHTTP, XSuperObject, IdGlobal, Vcl.Dialogs, System.SysUtils,
+  MainCode, ModalParametrosDatas, ModalParametrosIdent_Body, ModalParametrosIdent, Forms;
+
+procedure SGetV2Webhook;
+procedure SPutV2Webhook_chave;
+procedure SGetV2Webhook_chave;
+procedure SDelV2Webhook_chave;
+
+implementation
+
+threadvar
+  HttpClient: TIdHTTP;
+  AccessToken, ObjResult : iSuperObject;
+  JsonToSend: TMemoryStream;
+
+var
+  ModalParametrosDatas : TModalParametrosDatas;
+  ModalParametrosIdent : TModalParametrosIdent;
+  ModalParametrosIdent_Body : TModalParametrosIdent_Body;
+
+procedure SGetV2Webhook;
+var
+  sResponse: string;
+begin
+  try
+    if not Assigned(ModalParametrosDatas) then
+      Application.CreateForm(TModalParametrosDatas, ModalParametrosDatas);
+
+    if ModalParametrosDatas.ShowModal = 1 then
+    begin
+      AccessToken := Conexoes.OauthToken;
+      HttpClient := SetupClient;
+      HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+      sResponse := HttpClient.Get(MainCode.MainFrm.Enviroment + '/v2/webhook/?inicio=' + ModalParametrosDatas.DataInicio
+                                  +'&fim=' + ModalParametrosDatas.DataFim);
+
+      MainCode.MainFrm.MemoResponse.text := sresponse;
+    end;
+
+  except
+    on E: Exception do
+    begin
+      ShowMessage('Erro na Requisição GET /v2/webhook/: '#13#10#13#10 + e.Message);
+    end;
+  end;
+end;
+
+procedure SGetV2Webhook_chave;
+var
+  sResponse: string;
+begin
+  try
+    if not Assigned(ModalParametrosIdent) then
+      Application.CreateForm(TModalParametrosIdent, ModalParametrosIdent);
+
+    if ModalParametrosIdent.ShowModal = 1 then
+    begin
+      AccessToken := Conexoes.OauthToken;
+      HttpClient := SetupClient;
+
+      HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+
+      sResponse := HttpClient.Get(MainCode.MainFrm.Enviroment + '/v2/webhook/' + ModalParametrosIdent.Identificador);
+
+      MainCode.MainFrm.MemoResponse.text := sresponse;
+    end;
+
+  except
+    on E: Exception do
+    begin
+      ShowMessage('Erro na Requisição GET /v2/webhook/:chave '#13#10#13#10 + e.Message);
+    end;
+  end;
+end;
+
+procedure SPutV2Webhook_chave;
+var
+  sResponse: string;
+begin
+  try
+    if not Assigned(ModalParametrosIdent_Body) then
+      Application.CreateForm(TModalParametrosIdent_Body, ModalParametrosIdent_Body);
+
+    if ModalParametrosIdent_Body.ShowModal = 1 then
+    begin
+      AccessToken := Conexoes.OauthToken;
+      HttpClient := SetupClient;
+
+      HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+
+      JsonToSend := TMemoryStream.Create;
+      WriteStringToStream(JsonToSend, ModalParametrosIdent_Body.Body, IndyTextEncoding_UTF8);
+      JsonToSend.Position := 0;
+
+      sResponse := HttpClient.Put(MainCode.MainFrm.Enviroment + '/v2/webhook/'
+                            + ModalParametrosIdent_Body.Identificador, JsonToSend);
+
+      MainCode.MainFrm.MemoResponse.text := sresponse;
+    end;
+
+  except
+    on E: Exception do
+    begin
+      ShowMessage('Erro na requisição PUT /v2/webhook/:chave '#13#10#13#10 + e.Message);
+    end;
+  end;
+end;
+
+procedure SDelV2Webhook_chave;
+var
+  sResponse: string;
+begin
+  try
+
+    if not Assigned(ModalParametrosIdent) then
+      Application.CreateForm(TModalParametrosIdent, ModalParametrosIdent);
+
+    if ModalParametrosIdent.ShowModal = 1 then
+    begin
+      AccessToken := Conexoes.OauthToken;
+      HttpClient := Conexoes.SetupClient;
+
+      HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+      sResponse := HttpClient.Delete(MainCode.MainFrm.Enviroment + '/v2/webhook/'+ ModalParametrosIdent.Identificador);
+
+      MainCode.MainFrm.MemoResponse.text := sresponse;
+    end;
+
+  except
+    on E: Exception do
+    begin
+      ShowMessage('Erro na requisição DELETE /v2/webhook/:chave '#13#10#13#10 + e.Message);
+    end;
+  end;
+end;
+
+
+
+end.

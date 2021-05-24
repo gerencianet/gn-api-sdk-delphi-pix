@@ -1,0 +1,32 @@
+unit BodyPixClass;
+
+interface
+  {$IFDEF UNICODE}
+uses xSuperObject, xSuperJSON;
+
+Type
+
+  TCalendar = record
+    [Alias('expiracao')]
+    expiration: Integer;
+  end;
+
+  TDebtor = record
+    [Alias('cpf')]  cpf: string;
+    [Alias('nome')] name: string;
+  end;
+
+  TValue = record
+    [Alias('original')]
+    original: string;
+  end;
+
+  TAddInfo = record
+    [Alias('nome')]  name: string;
+    [Alias('valor')] value: string;
+  end;
+ {$ENDIF}
+
+implementation
+
+end.

@@ -1,0 +1,68 @@
+unit ViewPixDevolution;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TViewPixDevolution = class(TForm)
+    GroupBox3: TGroupBox;
+    txtE2eid: TEdit;
+    txtId: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    btnConfirmRequest: TButton;
+    btnCancelRequest: TButton;
+    GroupBox1: TGroupBox;
+    Label3: TLabel;
+    txtValue: TEdit;
+    procedure btnConfirmRequestClick(Sender: TObject);
+    procedure btnCancelRequestClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  private
+    function GetE2eid: String;
+    function GetId: String;
+  public
+    property e2eid: String read GetE2eid;
+    property id:    String read GetId;
+    procedure ClearRequestfields;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+function TViewPixDevolution.GetE2eid: String;
+begin
+  Result := txtE2eid.Text;
+end;
+
+procedure TViewPixDevolution.btnCancelRequestClick(Sender: TObject);
+begin
+  ModalResult := mrCancel;
+end;
+
+procedure TViewPixDevolution.btnConfirmRequestClick(Sender: TObject);
+begin
+  ModalResult := mrOk
+end;
+
+procedure TViewPixDevolution.FormCreate(Sender: TObject);
+begin
+  Self.Position := poScreenCenter;
+end;
+
+function TViewPixDevolution.GetId: String;
+begin
+  Result := txtId.Text;
+end;
+
+procedure TViewPixDevolution.ClearRequestfields;
+begin
+  txtE2eid.Text := '';
+  txtId.Text := '';
+end;
+
+end.

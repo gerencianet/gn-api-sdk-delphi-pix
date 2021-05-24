@@ -1,0 +1,49 @@
+unit ViewList;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TViewList = class(TForm)
+    GroupBox3: TGroupBox;
+    Label1: TLabel;
+    txtIdent: TEdit;
+    btnCancelRequest: TButton;
+    btnConfirmRequest: TButton;
+    procedure FormCreate(Sender: TObject);
+    procedure btnConfirmRequestClick(Sender: TObject);
+    procedure btnCancelRequestClick(Sender: TObject);
+  private
+    function GetIdent: String;
+  public
+    property Identificador: String read GetIdent;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+procedure TViewList.btnCancelRequestClick(Sender: TObject);
+begin
+  ModalResult := mrCancel
+end;
+
+procedure TViewList.btnConfirmRequestClick(Sender: TObject);
+begin
+  ModalResult := mrOk
+end;
+
+procedure TViewList.FormCreate(Sender: TObject);
+begin
+  Self.Position := poScreenCenter;
+end;
+
+function TViewList.GetIdent: String;
+begin
+  Result := txtIdent.Text;
+end;
+
+end.

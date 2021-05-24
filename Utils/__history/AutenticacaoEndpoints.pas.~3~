@@ -1,0 +1,16 @@
+unit AutenticacaoEndpoints;
+
+interface
+
+procedure OauthToken;
+
+implementation
+
+
+procedure OauthToken;
+begin
+  // Conexoes.OauthToken;
+  //MemoResponse.Text := AccessToken.S['access_token'];
+end;
+
+end.
