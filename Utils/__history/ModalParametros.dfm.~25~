@@ -1,0 +1,69 @@
+object ModalParametros: TModalParametros
+  Left = 0
+  Top = 0
+  Caption = 'Modal da Requisi'#231#227'o'
+  ClientHeight = 643
+  ClientWidth = 575
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object GroupBox3: TGroupBox
+    Left = 2
+    Top = 129
+    Width = 565
+    Height = 75
+    Caption = 'Requisi'#231#227'o Datas | '#39'2021-10-19T23:00:00.000Z'#39
+    TabOrder = 0
+    object Label1: TLabel
+      Left = 3
+      Top = 24
+      Width = 38
+      Height = 18
+      Caption = 'Inicio'
+    end
+    object Label2: TLabel
+      Left = 281
+      Top = 24
+      Width = 16
+      Height = 13
+      Caption = 'Fim'
+    end
+    object txtDataInicio: TEdit
+      Left = 3
+      Top = 40
+      Width = 272
+      Height = 21
+      TabOrder = 0
+    end
+    object txtDataFim: TEdit
+      Left = 281
+      Top = 40
+      Width = 272
+      Height = 21
+      TabOrder = 1
+    end
+  end
+  object btnConfirmaRequisicao: TButton
+    Left = 8
+    Top = 210
+    Width = 565
+    Height = 28
+    Caption = 'Confirmar a Requisi'#231#227'o'
+    TabOrder = 1
+    OnClick = btnConfirmaRequisicaoClick
+  end
+  object btnCancelarRequisicao: TButton
+    Left = 8
+    Top = 568
+    Width = 563
+    Height = 33
+    Caption = 'Cancelar a Requisi'#231#227'o'
+    TabOrder = 2
+  end
+end

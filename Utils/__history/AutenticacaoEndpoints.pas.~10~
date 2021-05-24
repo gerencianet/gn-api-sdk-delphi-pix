@@ -1,0 +1,28 @@
+unit AutenticacaoEndpoints;
+
+interface
+
+uses
+  Classes, Conexoes, IdHTTP, XSuperObject, IdGlobal, Vcl.Dialogs, System.SysUtils, MainCode;
+
+procedure OauthToken;
+
+implementation
+
+threadvar
+  AccessToken : iSuperObject;
+
+procedure OauthToken;
+begin
+  try
+    AccessToken := Conexoes.OauthToken;
+    MainCode.MainFrm.MemoResponse.Text := 'Autenticação Realizada com Sucesso!';//AccessToken.S['access_token'];
+    except
+    on E: Exception do
+    begin
+      ShowMessage('Erro na Requisião GET /OAuth/Token '#13#10#13#10 + e.Message);
+    end;
+  end;
+end;
+
+end.

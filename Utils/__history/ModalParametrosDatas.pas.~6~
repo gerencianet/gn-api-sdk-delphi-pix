@@ -1,0 +1,58 @@
+unit ModalParametrosDatas;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TModalParametrosDatas = class(TForm)
+    GroupBox3: TGroupBox;
+    txtDataInicio: TEdit;
+    txtDataFim: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    btnConfirmaRequisicao: TButton;
+    btnCancelarRequisicao: TButton;
+    procedure btnConfirmaRequisicaoClick(Sender: TObject);
+    procedure btnCancelarRequisicaoClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  private
+    function GetDataInicio: String;
+    function GetDataFim: String;
+  public
+    property DataInicio: String read GetDataInicio;
+    property DataFim:    String read GetDataFim;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+function TModalParametrosDatas.GetDataInicio: String;
+begin
+  Result := txtDataInicio.Text;
+end;
+
+procedure TModalParametrosDatas.btnCancelarRequisicaoClick(Sender: TObject);
+begin
+  ModalResult := mrCancel;
+end;
+
+procedure TModalParametrosDatas.btnConfirmaRequisicaoClick(Sender: TObject);
+begin
+  ModalResult := mrOk
+end;
+
+procedure TModalParametrosDatas.FormCreate(Sender: TObject);
+begin
+  Self.Position := poScreenCenter]
+end;
+
+function TModalParametrosDatas.GetDataFim: String;
+begin
+  Result := txtDataFim.Text;
+end;
+
+end.

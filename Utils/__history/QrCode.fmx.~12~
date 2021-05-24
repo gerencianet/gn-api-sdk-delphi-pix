@@ -1,0 +1,31 @@
+object QrCodeFrm: TQrCodeFrm
+  Left = 0
+  Top = 0
+  Caption = 'Qr Code'
+  ClientHeight = 241
+  ClientWidth = 265
+  Fill.Kind = Solid
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnShow = FormShow
+  DesignerMasterStyle = 0
+  object Rectangle1: TRectangle
+    Fill.Color = claWhite
+    Position.X = 25.000000000000000000
+    Position.Y = 7.000000000000000000
+    Size.Width = 221.000000000000000000
+    Size.Height = 221.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Image1: TImage
+    MultiResBitmap = <
+      item
+      end>
+    Position.X = 25.000000000000000000
+    Position.Y = 8.000000000000000000
+    Size.Width = 220.000000000000000000
+    Size.Height = 220.000000000000000000
+    Size.PlatformDefault = False
+  end
+end

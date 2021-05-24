@@ -1,0 +1,91 @@
+unit BodyAccountClass;
+
+interface
+
+uses xSuperObject, xSuperJSON, System.RTTI;
+
+Type
+  TRefuseAll = record
+    [Alias('recusarTodos')] RefuseAll: Boolean;
+  end;
+
+  TReceiveKey = class
+    [Alias('txidObrigatorio')] TxidMandatory : Boolean;
+    [Alias('qrCodeEstatico')] QrCodeStatic : TRefuseAll;
+  end;
+
+  TKeyGN = class
+    [Alias('recebimento')] Receive : TReceiveKey;
+  end;
+
+  TKey = class
+  private
+    FKeyGN : TKeyGN;
+    procedure SetKeyGN (Const Value : TKeyGN);
+  public
+    constructor Create (name : String);
+    [name]
+    property KeyGN: TKeyGN read FKeyGN write SetKeyGN;
+  end;
+
+  TPix = class
+    [Alias('chaves')] Key : TKey;
+    [Alias('receberSemChave')] ReceiveKey: Boolean;
+  end;
+  
+ TBodyAccountPixClass = class
+  private
+    FPix     : TPix;
+    procedure SetPix(const Value: TPix);
+  public
+    [Alias('pix')]
+    property Pix: TPix read FPix write SetPix;
+  constructor Create;
+  end;
+
+
+implementation
+
+{ TBodyAccountPixClass }
+
+constructor TBodyAccountPixClass.Create;
+begin
+  inherited;
+end;
+
+procedure TBodyAccountPixClass.SetPix(const Value: TPix);
+begin
+  FPix := Value;
+end;
+
+{procedure TKey.SetKeyGN(const Value: TKeyGN);
+begin
+  FKeyGN := Value;
+  end;
+  }
+{ TKeyGN }
+
+constructor TKey.Create(name : String);
+begin
+inherited;
+  //Self.KeyGN.ClassName := name;
+end;
+
+procedure TKey.SetKeyGN(const Value: TKeyGN);
+begin
+  FKeyGN := Value;
+end;
+  
+{ TKeyGN }
+{
+constructor TKeyGN.Create(name: String);
+begin
+  Self.SetName(name);
+  end;
+
+  procedure TKeyGN.SetName(const Value: String);
+  begin
+    FKeyGN := Value;
+    end;}
+
+end.

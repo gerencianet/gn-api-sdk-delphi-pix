@@ -1,0 +1,85 @@
+unit ModalParametrosBodyCob;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, CustomerClasses, XSuperObject;
+
+type
+  TModalParametrosBodyCob = class(TForm)
+    GroupBox3: TGroupBox;
+    btnConfirmaRequisicao: TButton;
+    btnCancelarRequisicao: TButton;
+    gbDevedor: TGroupBox;
+    txtNome: TEdit;
+    txtCpf: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    GroupBox1: TGroupBox;
+    Label4: TLabel;
+    txtExpiracao: TEdit;
+    gbValor: TGroupBox;
+    Label3: TLabel;
+    Edit1: TEdit;
+    GroupBox2: TGroupBox;
+    txtChave: TEdit;
+    GroupBox4: TGroupBox;
+    txtSolicitacaoPagador: TEdit;
+    procedure btnCancelarRequisicaoClick(Sender: TObject);
+    procedure btnConfirmaRequisicaoClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  private
+    function GetBody : String;
+  public
+    property Body: String read GetBody;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+procedure TModalParametrosBodyCob.btnCancelarRequisicaoClick(Sender: TObject);
+begin
+  ModalResult := mrCancel;
+end;
+
+procedure TModalParametrosBodyCob.btnConfirmaRequisicaoClick(Sender: TObject);
+begin
+  ModalResult := mrOk;
+end;
+
+procedure TModalParametrosBodyCob.FormCreate(Sender: TObject);
+begin
+  Self.Position := poScreenCenter;
+end;
+
+function TModalParametrosBodyCob.GetBody: String;
+var
+  BodyRequest : TCustomerClass;
+  FCalendario : TCalendario;
+  FDevedor    : TDevedor;
+  FValor      : TValor;
+begin
+
+  BodyRequest := TCustomerClass.Create;
+
+  FCalendario.expiracao := 3600;
+  BodyRequest.Calendario := FCalendario;
+
+  FDevedor.cpf := '12345678909';
+  FDevedor.nome := 'Francisco da Silva';
+  BodyRequest.Devedor := FDevedor;
+
+  FValor.original := '0.01';
+  BodyRequest.Valor := FValor;
+
+  BodyRequest.Chave := 'luiz.campos@gerencianet.com.br';
+  BodyRequest.solicitacaoPagador := 'Informe o número ou identificador do pedido.';
+
+  Result := BodyRequest.AsJSON;
+
+end;
+
+
+end.

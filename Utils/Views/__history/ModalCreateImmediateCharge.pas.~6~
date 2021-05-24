@@ -1,0 +1,95 @@
+unit ModalCreateImmediateCharge;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, BodyCobClasses, XSuperObject;
+
+type
+  TModalCreateImmediateCharge = class(TForm)
+    GroupBox3: TGroupBox;
+    btnConfirmaRequisicao: TButton;
+    btnCancelarRequisicao: TButton;
+    gbDevedor: TGroupBox;
+    txtNome: TEdit;
+    txtCpf: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    GroupBox1: TGroupBox;
+    Label4: TLabel;
+    txtExpiracao: TEdit;
+    gbValor: TGroupBox;
+    Label3: TLabel;
+    txtValor: TEdit;
+    GroupBox2: TGroupBox;
+    txtChave: TEdit;
+    GroupBox4: TGroupBox;
+    txtSolicitacaoPagador: TEdit;
+    procedure btnCancelarRequisicaoClick(Sender: TObject);
+    procedure btnConfirmaRequisicaoClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  private
+    function GetBody : String;
+  public
+    property Body: String read GetBody;
+    procedure LimpaCamposRequisicao;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+procedure TModalCreateImmediateCharge.btnCancelarRequisicaoClick(Sender: TObject);
+begin
+  ModalResult := mrCancel;
+end;
+
+procedure TModalCreateImmediateCharge.btnConfirmaRequisicaoClick(Sender: TObject);
+begin
+  ModalResult := mrOk;
+end;
+
+procedure TModalCreateImmediateCharge.FormCreate(Sender: TObject);
+begin
+  Self.Position := poScreenCenter;
+end;
+
+function TModalCreateImmediateCharge.GetBody: String;
+var
+  BodyRequest : TBodyCobClasses;
+  FCalendario : TCalendario;
+  FDevedor    : TDevedor;
+  FValor      : TValor;
+begin
+
+  BodyRequest := TBodyCobClasses.Create;
+
+  FCalendario.expiracao := StrToInt(txtExpiracao.Text);
+  BodyRequest.Calendario := FCalendario;
+
+  FDevedor.cpf := txtCpf.Text;
+  FDevedor.nome := txtNome.Text;
+  BodyRequest.Devedor := FDevedor;
+
+  FValor.original := txtValor.Text;
+  BodyRequest.Valor := FValor;
+
+  BodyRequest.Chave := txtChave.Text;
+  BodyRequest.solicitacaoPagador := txtSolicitacaoPagador.Text;
+
+  Result := BodyRequest.AsJSON;
+end;
+
+
+procedure TModalCreateImmediateCharge.LimpaCamposRequisicao;
+begin
+  txtExpiracao.Text := '';
+  txtNome.Text := '';
+  txtCpf.Text := '';
+  txtValor.Text := '';
+  txtChave.Text := '';
+  txtSolicitacaoPagador.Text := '';
+end;
+
+end.

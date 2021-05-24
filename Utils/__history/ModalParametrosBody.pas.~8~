@@ -1,0 +1,50 @@
+unit ModalParametrosBody;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TModalParametrosBody = class(TForm)
+    GroupBox3: TGroupBox;
+    btnConfirmaRequisicao: TButton;
+    btnCancelarRequisicao: TButton;
+    txtBody: TMemo;
+    procedure btnCancelarRequisicaoClick(Sender: TObject);
+    procedure btnConfirmaRequisicaoClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  private
+    function GetBody : String;
+  public
+    property Body: String read GetBody;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+procedure TModalParametrosBody.btnCancelarRequisicaoClick(Sender: TObject);
+begin
+  ModalResult := mrCancel;
+end;
+
+procedure TModalParametrosBody.btnConfirmaRequisicaoClick(Sender: TObject);
+begin
+  ModalResult := mrOk;
+end;
+
+procedure TModalParametrosBody.FormCreate(Sender: TObject);
+begin
+  txtBody.Text := '';
+  Self.Position := poScreenCenter;
+end;
+
+function TModalParametrosIdent_Body.GetBody: String;
+begin
+  Result := txtBody.Text;
+end;
+
+
+end.

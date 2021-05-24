@@ -1,0 +1,204 @@
+unit PixEndpoints;
+
+interface
+
+uses
+  Classes, Conexoes, IdHTTP, XSuperObject, IdGlobal, Vcl.Dialogs, System.SysUtils,
+  MainCode, ModalParametrosDatas, ModalParametrosBody, Forms, ModalParametrosIdent,
+  ModalParametrosIdent2, ModalParametrosIdent2_Body;
+
+procedure SGetV2Pix;
+procedure SPostv2Pix;
+procedure SGetv2Pix_e2eId;
+procedure SGetV2Pix_e2eId_devolucao_id;
+procedure SPutv2Pix_e2eId_devolucao_id;
+
+implementation
+
+threadvar
+  HttpClient: TIdHTTP;
+  AccessToken, ObjResult : iSuperObject;
+  JsonToSend: TMemoryStream;
+
+var
+  ModalParametrosDatas : TModalParametrosDatas;
+  ModalParametrosBody : TModalParametrosBody;
+  ModalParametrosIdent : TModalParametrosIdent;
+  ModalParametrosIdent2 : TModalParametrosIdent2;
+  ModalParametrosIdent2_Body : TModalParametrosIdent2_Body;
+
+procedure SGetV2Pix;
+var
+  sResponse: string;
+begin
+  try
+    try
+      if not Assigned(ModalParametrosDatas) then
+        Application.CreateForm(TModalParametrosDatas, ModalParametrosDatas);
+
+      if ModalParametrosDatas.ShowModal = 1 then
+      begin
+
+        AccessToken := Conexoes.OauthToken;
+        HttpClient := Conexoes.SetupClient;
+
+        HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+        sResponse := HttpClient.Get(MainCode.MainFrm.Enviroment + '/v2/pix?inicio='+ ModalParametrosDatas.DataInicio +
+          '&fim=' + ModalParametrosDatas.DataFim );
+
+        MainCode.MainFrm.MemoResponse.text := sresponse;
+      end;
+
+    except
+      on E: Exception do
+      begin
+        ShowMessage('Erro na Requisição GET /v2/pix/'#13#10#13#10 + e.Message);
+      end;
+    end;
+  finally
+    ModalParametrosDatas.txtDataInicio.Text := '';
+    ModalParametrosDatas.txtDataFim.Text := '';
+  end;
+end;
+
+procedure SPostv2Pix;
+var
+  sResponse: string;
+begin
+  try
+    try
+      if not Assigned(ModalParametrosBody) then
+        Application.CreateForm(TModalParametrosBody, ModalParametrosBody);
+
+      if ModalParametrosBody.ShowModal = 1 then
+      begin
+
+        AccessToken := Conexoes.OauthToken;
+        HttpClient := Conexoes.SetupClient;
+
+        HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+
+        JsonToSend := TMemoryStream.Create;
+        WriteStringToStream(JsonToSend, ModalParametrosBody.Body, IndyTextEncoding_UTF8);
+        JsonToSend.Position := 0;
+
+        sResponse := HttpClient.Post( MainCode.MainFrm.Enviroment  + '/v2/pix', JsonToSend);
+
+        MainCode.MainFrm.MemoResponse.text := sresponse;
+      end;
+
+    except
+      on E: Exception do
+      begin
+        ShowMessage('Erro na Requisição POST /v2/pix '#13#10#13#10 + e.Message);
+      end;
+    end;
+  finally
+    ModalParametrosBody.txtBody.Text := '';
+  end;
+end;
+
+procedure SGetv2Pix_e2eId;
+var
+  sResponse: string;
+begin
+  try
+    try
+      if not Assigned(ModalParametrosIdent) then
+        Application.CreateForm(TModalParametrosIdent, ModalParametrosIdent);
+
+      if ModalParametrosIdent.ShowModal = 1 then
+      begin
+        AccessToken := Conexoes.OauthToken;
+        HttpClient := Conexoes.SetupClient;
+
+        HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+        sResponse := HttpClient.Get(MainCode.MainFrm.Enviroment + '/v2/pix/'+ ModalParametrosIdent.Identificador);
+
+        MainCode.MainFrm.MemoResponse.text := sresponse;
+      end;
+
+    except
+      on E: Exception do
+      begin
+        ShowMessage('Erro na Requisição GET /v2/pix/:e2id '#13#10#13#10 + e.Message);
+      end;
+    end;
+  finally
+    ModalParametrosIdent.txtIdent.Text := '';
+  end;
+end;
+
+procedure SGetV2Pix_e2eId_devolucao_id;
+var
+  sResponse: string;
+begin
+  try
+    try
+      if not Assigned(ModalParametrosIdent2) then
+        Application.CreateForm(TModalParametrosIdent2, ModalParametrosIdent2);
+
+      if ModalParametrosIdent2.ShowModal = 1 then
+      begin
+        AccessToken := Conexoes.OauthToken;
+        HttpClient := Conexoes.SetupClient;
+
+        HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+        sResponse := HttpClient.Get(MainCode.MainFrm.Enviroment + '/v2/pix/'+ ModalParametrosIdent2.e2eid +
+                                    '/devolucao/'+ModalParametrosIdent2.id);
+
+        MainCode.MainFrm.MemoResponse.text := sresponse;
+      end;
+
+    except
+      on E: Exception do
+      begin
+        ShowMessage('Erro na Requisição GET /v2/pix/:e2id/devolucao/:id '#13#10#13#10 + e.Message);
+      end;
+    end;
+  finally
+    ModalParametrosIdent2.txtE2eid.Text := '';
+    ModalParametrosIdent2.txtId.Text := '';
+  end;
+end;
+
+procedure SPutv2Pix_e2eId_devolucao_id;
+var
+  sResponse: string;
+begin
+  try
+    try
+      if not Assigned(ModalParametrosIdent2_Body) then
+        Application.CreateForm(TModalParametrosIdent2_Body, ModalParametrosIdent2_Body);
+
+      if ModalParametrosIdent2_Body.ShowModal = 1 then
+      begin
+        AccessToken := Conexoes.OauthToken;
+        HttpClient := Conexoes.SetupClient;
+
+        HttpClient.Request.CustomHeaders.Values['Authorization'] := ('Bearer '+ AccessToken.S['access_token']);
+
+        JsonToSend := TMemoryStream.Create;
+        WriteStringToStream(JsonToSend, ModalParametrosIdent2_Body.Body, IndyTextEncoding_UTF8);
+        JsonToSend.Position := 0;
+
+        sResponse := HttpClient.Put(MainCode.MainFrm.Enviroment + '/v2/pix/'+ ModalParametrosIdent2_Body.e2eid +
+                                    '/devolucao/'+ ModalParametrosIdent2_Body.id, JsonToSend);
+
+        MainCode.MainFrm.MemoResponse.text := sresponse;
+      end;
+
+    except
+      on E: Exception do
+      begin
+        ShowMessage('Erro na Requisição PUT /v2/pix/:e2id/devolucao/:id '#13#10#13#10 + e.Message);
+      end;
+    end;
+  finally
+    ModalParametrosIdent2_Body.txtE2eid.Text := '';
+    ModalParametrosIdent2_Body.txtId.Text := '';
+    ModalParametrosIdent2_Body.txtBody.Text := '';
+  end;
+end;
+
+end.

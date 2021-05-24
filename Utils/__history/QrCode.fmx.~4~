@@ -1,0 +1,40 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'Qr Code'
+  ClientHeight = 318
+  ClientWidth = 271
+  Fill.Kind = Solid
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object Rectangle1: TRectangle
+    Fill.Color = claWhite
+    Position.X = 25.000000000000000000
+    Position.Y = 7.000000000000000000
+    Size.Width = 221.000000000000000000
+    Size.Height = 221.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Button1: TButton
+    Position.X = 24.000000000000000000
+    Position.Y = 248.000000000000000000
+    Size.Width = 201.000000000000000000
+    Size.Height = 44.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    Text = 'Gerar QR Code'
+    OnClick = Button1Click
+  end
+  object Image1: TImage
+    MultiResBitmap = <
+      item
+      end>
+    Position.X = 25.000000000000000000
+    Position.Y = 8.000000000000000000
+    Size.Width = 220.000000000000000000
+    Size.Height = 220.000000000000000000
+    Size.PlatformDefault = False
+  end
+end

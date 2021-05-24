@@ -1,0 +1,39 @@
+unit ModalParametrosIdent;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TModalParametrosIdent = class(TForm)
+    GroupBox3: TGroupBox;
+    Label1: TLabel;
+    txtDataInicio: TEdit;
+    btnConfirmaRequisicao: TButton;
+    btnCancelarRequisicao: TButton;
+    procedure btnCancelarRequisicaoClick(Sender: TObject);
+    procedure btnConfirmaRequisicaoClick(Sender: TObject);
+  private
+    function GetIdent: String;
+  public
+    property Identificador: String read GetIdent;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+procedure TModalParametrosIdent.btnConfirmaRequisicaoClick(Sender: TObject);
+begin
+  ModalResult := mrOk
+end;
+
+procedure TModalParametrosIdent.btnCancelarRequisicaoClick(Sender: TObject);
+begin
+  ModalResult := mrCancel
+end;
+
+
+end.

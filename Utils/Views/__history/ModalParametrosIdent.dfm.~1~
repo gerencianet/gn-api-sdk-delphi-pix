@@ -1,0 +1,58 @@
+object ModalParametrosIdent: TModalParametrosIdent
+  Left = 0
+  Top = 0
+  Caption = 'Modal da Requisi'#231#227'o'
+  ClientHeight = 261
+  ClientWidth = 584
+  Color = 6001140
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object GroupBox3: TGroupBox
+    Left = 0
+    Top = 0
+    Width = 584
+    Height = 261
+    Align = alClient
+    Caption = 'Requisi'#231#227'o Identificador'
+    TabOrder = 0
+    object Label1: TLabel
+      Left = 3
+      Top = 24
+      Width = 61
+      Height = 13
+      Caption = 'Identificador'
+    end
+    object txtIdent: TEdit
+      Left = 3
+      Top = 39
+      Width = 574
+      Height = 21
+      TabOrder = 0
+    end
+    object btnConfirmaRequisicao: TButton
+      Left = 286
+      Top = 66
+      Width = 291
+      Height = 32
+      Caption = 'Confirmar a Requisi'#231#227'o'
+      TabOrder = 1
+      OnClick = btnConfirmaRequisicaoClick
+    end
+    object btnCancelarRequisicao: TButton
+      Left = 3
+      Top = 66
+      Width = 280
+      Height = 32
+      Caption = 'Cancelar a Requisi'#231#227'o'
+      TabOrder = 2
+      OnClick = btnCancelarRequisicaoClick
+    end
+  end
+end
